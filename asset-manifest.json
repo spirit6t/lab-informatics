@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/lab-informatics/static/css/main.e6c13ad2.css",
-    "main.js": "/lab-informatics/static/js/main.6bccfd51.js",
+    "main.js": "/lab-informatics/static/js/main.8cb58691.js",
     "static/js/453.130a6b31.chunk.js": "/lab-informatics/static/js/453.130a6b31.chunk.js",
     "index.html": "/lab-informatics/index.html",
     "main.e6c13ad2.css.map": "/lab-informatics/static/css/main.e6c13ad2.css.map",
-    "main.6bccfd51.js.map": "/lab-informatics/static/js/main.6bccfd51.js.map",
+    "main.8cb58691.js.map": "/lab-informatics/static/js/main.8cb58691.js.map",
     "453.130a6b31.chunk.js.map": "/lab-informatics/static/js/453.130a6b31.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.6bccfd51.js"
+    "static/js/main.8cb58691.js"
   ]
 }
