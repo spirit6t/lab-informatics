@@ -13,11 +13,26 @@ export default function LabInformaticsCurriculum() {
         "Basic computer hardware/software"
       ],
       resources: [
-        "Pathology Informatics and Data - API Slide Set",
-        "Computer Hardware, Software, and Networking - API Slide Set",
-        "Pathology Informatics: Theory and Practice (ASCP)",
-        "Pathologists as stewards of laboratory information (APLM)"
+        {
+          name: "Harrison, J. Session 0: Pathology Informatics and Data. Association for Pathology Informatics.",
+          url: "https://www.pathologyinformatics.org/teaching-slide-sets"
+        },
+        {
+          name: "Harrison, J. Session 1: Computer Hardware, Software, and Networking.Association for Pathology Informatics.",
+          url: "https://www.pathologyinformatics.org/teaching-slide-sets"
+        },
+        {
+          name: "Pantanowitz L, Tuthill JM, Balis UGJ, eds. Chapter 1: Pathology Informatics: An Introduction. In: Pantanowitz L, Tuthill JM, Balis UGJ, eds. Pathology Informatics: Theory and Practice. ASCP Press; 2012: 1-8."
+        },
+        {
+          name: "Henricks WH, Wilkerson ML, Castellani WJ, Whitsitt MS, Sinard JH. Pathologists as stewards of laboratory information.Arch Pathol Lab Med. 2015; 139(3): 332- 337.",
+          url: https://meridian.allenpress.com/aplm/article/139/3/332/193666/Pathologists-as-Stewards-of-Laboratory-Information"
+        },
+        {
+          name: "Harrison, JH. Management of pathology information systems. In: Laboratory Administration for Pathologists, 2nd Ed.Wagar EA, Cohen MB, Karcher DS, Siegel GP, Eds.CAP Press; 2019: 93 - 94. "
+        }
       ],
+
       resident: "",
       presentationDate: "",
       projectDeadline: "",
@@ -164,8 +179,8 @@ export default function LabInformaticsCurriculum() {
       projectDeadline: "",
       expanded: false
     }
-  ]);
-
+  ];
+  const [topics, setTopics] = useState(initialTopics);
   useEffect(() => {
     const stored = localStorage.getItem("informaticsTopics");
     if (stored) {
@@ -233,8 +248,18 @@ export default function LabInformaticsCurriculum() {
                 <h3 className="font-semibold mt-2">Resources:</h3>
                 <ul className="list-disc list-inside text-sm text-blue-700">
                   {topic.resources.map((res, i) => (
-                    <li key={i}><a href="#">{res}</a></li>
+                    <li key={i}>
+                      <a
+                        href={res.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline text-blue-700 hover:text-blue-900"
+                      >
+                        {res.name}
+                      </a>
+                    </li>
                   ))}
+
                 </ul>
 
                 <div className="mt-4">
