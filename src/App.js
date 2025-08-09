@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+// App.js — Admin-Only Mode with Multi-Subtopic Assignments + Coverage Summary
+
+import React, { useState, useEffect, useMemo } from "react";
 import * as XLSX from "xlsx";
+import logo from "./logo.png";
 
 export default function LabInformaticsCurriculum() {
+  // ---- Seed data (you can add more topics later) ----
   const initialTopics = [
     {
       id: "topic1",
@@ -10,234 +14,268 @@ export default function LabInformaticsCurriculum() {
         "Distinction between informatics and IT",
         "Data literacy and EMR interaction",
         "Pathology vs Clinical Informatics",
-        "Basic computer hardware/software"
+        "Basic computer hardware/software",
       ],
       resources: [
         {
-          name: "Harrison, J. Session 0: Pathology Informatics and Data. Association for Pathology Informatics.",
-          url: "https://www.pathologyinformatics.org/teaching-slide-sets"
+          name:
+            "Harrison, J. Session 0: Pathology Informatics and Data. Association for Pathology Informatics.",
+          url: "https://www.pathologyinformatics.org/teaching-slide-sets",
         },
         {
-          name: "Harrison, J. Session 1: Computer Hardware, Software, and Networking.Association for Pathology Informatics.",
-          url: "https://www.pathologyinformatics.org/teaching-slide-sets"
+          name:
+            "Harrison, J. Session 1: Computer Hardware, Software, and Networking. Association for Pathology Informatics.",
+          url: "https://www.pathologyinformatics.org/teaching-slide-sets",
         },
         {
-          name: "Pantanowitz L, Tuthill JM, Balis UGJ, eds. Chapter 1: Pathology Informatics: An Introduction. In: Pantanowitz L, Tuthill JM, Balis UGJ, eds. Pathology Informatics: Theory and Practice. ASCP Press; 2012: 1-8."
+          name:
+            "Henricks WH, et al. Pathologists as stewards of laboratory information.",
+          url:
+            "https://meridian.allenpress.com/aplm/article/139/3/332/193666/Pathologists-as-Stewards-of-Laboratory-Information",
         },
-        {
-          name: "Henricks WH, Wilkerson ML, Castellani WJ, Whitsitt MS, Sinard JH. Pathologists as stewards of laboratory information.Arch Pathol Lab Med. 2015; 139(3): 332- 337.",
-          url: https://meridian.allenpress.com/aplm/article/139/3/332/193666/Pathologists-as-Stewards-of-Laboratory-Information"
-        },
-        {
-          name: "Harrison, JH. Management of pathology information systems. In: Laboratory Administration for Pathologists, 2nd Ed.Wagar EA, Cohen MB, Karcher DS, Siegel GP, Eds.CAP Press; 2019: 93 - 94. "
-        }
       ],
-
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
+      residents: [],
+      expanded: false,
     },
-    {
-      id: "topic2",
-      title: "2. Data Science",
-      subtopics: [
-        "Data structure, quality, and flow",
-        "Descriptive/Inferential Statistics",
-        "Big Data in Pathology",
-        "Artificial Intelligence and Machine Learning"
-      ],
-      resources: [
-        "Machine Learning - API Slide Set",
-        "Statistics for Pathologists (Demos Medical)",
-        "Mod Pathol articles on AI/ML and ethics",
-        "Generative AI in Pathology"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic3",
-      title: "3. Data Availability and Security",
-      subtopics: [
-        "Data security and cyber threats",
-        "HIPAA and PHI regulations",
-        "Health IT system reliability",
-        "De-identification and data use"
-      ],
-      resources: [
-        "Cybersecurity - API Slide Set",
-        "HIPAA.gov Professional Guidance",
-        "HIMSS Cybersecurity Resources",
-        "AHRQ High Reliability Primer"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic4",
-      title: "4. LIS Components and Functions",
-      subtopics: [
-        "LIS core elements (dictionaries, audit trails, etc.)",
-        "Order facilitation and test routing",
-        "Autoverification and reflex rules",
-        "Barcode tracking and specimen routing",
-        "LIS for quality and error tracking"
-      ],
-      resources: [
-        "Databases - API Slide Set",
-        "LIS and Health Information Systems - API Slide Set",
-        "CAP LIS Fundamentals",
-        "Patient and Sample Identification (J Med Biochem)"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic5",
-      title: "5. Messaging Standards and Interfaces",
-      subtopics: [
-        "Standards development and HL7",
-        "Terminologies: SNOMED, LOINC, ICD",
-        "Middleware definitions and usage",
-        "Data-driven decision making (DDDM)"
-      ],
-      resources: [
-        "Interoperability and Interfaces - API Slide Set",
-        "DICOM Whole Slide Imaging",
-        "CDC ICD-10 Tool",
-        "CAP Integration & Interface Guidelines"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic6",
-      title: "6. Clinical Decision Support",
-      subtopics: [
-        "CDS architecture and 5 rights",
-        "CDS categories: ordering, education, diagnostics",
-        "Limitations: alert fatigue, bias",
-        "CDS evaluation methods"
-      ],
-      resources: [
-        "Clinical Decision Support - API Slide Set",
-        "10 Commandments for CDS (JAMIA)",
-        "SAFER Self-Assessment Tool (ONC)",
-        "Systematic review on CDS in Lab Medicine"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic7",
-      title: "7. Digital Pathology Systems",
-      subtopics: [
-        "Types and uses of digital pathology (WSI, telepathology)",
-        "Image formats and compression",
-        "Image analysis and AI in pathology",
-        "Validation and CAP regulatory guidelines"
-      ],
-      resources: [
-        "Digital Imaging - API Slide Set",
-        "Digital Pathology applications (Mod Pathol)",
-        "Validation of WSI (CAP guideline)",
-        "Lancet Oncology AI in Digital Pathology"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    },
-    {
-      id: "topic8",
-      title: "8. Pathologist Role in LIS and EHR Projects",
-      subtopics: [
-        "Test ordering and result display roles",
-        "Test build and validation",
-        "New LIS evaluation and implementation",
-        "Regulatory & accreditation responsibilities"
-      ],
-      resources: [
-        "System Implementation - API Slide Set",
-        "Pathologists in the EHR Landscape (APLM)",
-        "CLSI Autoverification & Instrumentation",
-        "CAP LIS Change Control & QA Checklist"
-      ],
-      resident: "",
-      presentationDate: "",
-      projectDeadline: "",
-      expanded: false
-    }
   ];
+
+  // ---- State ----
   const [topics, setTopics] = useState(initialTopics);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+
+  // ---- Load persisted state & migrate any older resident shape ----
   useEffect(() => {
-    const stored = localStorage.getItem("informaticsTopics");
-    if (stored) {
-      setTopics(JSON.parse(stored));
+    const storedTopics = localStorage.getItem("informaticsTopics");
+    if (storedTopics) {
+      const parsed = JSON.parse(storedTopics).map((t) => ({
+        ...t,
+        residents: Array.isArray(t.residents)
+          ? t.residents.map((r) => ({
+            name: r?.name || "",
+            // migrate single string 'subtopic' -> array 'subtopics'
+            subtopics: Array.isArray(r?.subtopics)
+              ? r.subtopics
+              : r?.subtopic
+                ? [r.subtopic]
+                : [],
+            dueDate: r?.dueDate || "",
+          }))
+          : [],
+        expanded: !!t.expanded,
+      }));
+      setTopics(parsed);
     }
+
+    const storedAdmin = localStorage.getItem("isAdmin");
+    if (storedAdmin === "true") setIsAdmin(true);
   }, []);
 
+  // ---- Persist topics/admin ----
   useEffect(() => {
     localStorage.setItem("informaticsTopics", JSON.stringify(topics));
   }, [topics]);
 
-  const handleChange = (index, field, value) => {
-    const updatedTopics = [...topics];
-    updatedTopics[index][field] = value;
-    setTopics(updatedTopics);
-  };
+  useEffect(() => {
+    localStorage.setItem("isAdmin", String(isAdmin));
+  }, [isAdmin]);
 
+  // ---- Topic controls ----
   const toggleExpand = (index) => {
-    const updatedTopics = [...topics];
-    updatedTopics[index].expanded = !updatedTopics[index].expanded;
-    setTopics(updatedTopics);
+    setTopics((prev) =>
+      prev.map((t, i) => (i === index ? { ...t, expanded: !t.expanded } : t))
+    );
   };
 
-  const exportToExcel = () => {
-    const exportData = topics.map(({ title, resident, presentationDate, projectDeadline }) => ({
-      Title: title,
-      Resident: resident,
-      "Presentation Date": presentationDate,
-      "Project Deadline": projectDeadline
-    }));
+  // ---- Resident controls ----
+  const addResident = (topicIndex) => {
+    setTopics((prev) =>
+      prev.map((t, i) =>
+        i === topicIndex
+          ? {
+            ...t,
+            residents: [
+              ...t.residents,
+              { name: "", subtopics: [], dueDate: "" },
+            ],
+          }
+          : t
+      )
+    );
+  };
 
-    const worksheet = XLSX.utils.json_to_sheet(exportData);
+  const removeResident = (topicIndex, residentIndex) => {
+    setTopics((prev) =>
+      prev.map((t, i) =>
+        i === topicIndex
+          ? {
+            ...t,
+            residents: t.residents.filter((_, r) => r !== residentIndex),
+          }
+          : t
+      )
+    );
+  };
+
+  const updateResidentField = (topicIndex, residentIndex, field, value) => {
+    setTopics((prev) =>
+      prev.map((t, i) =>
+        i === topicIndex
+          ? {
+            ...t,
+            residents: t.residents.map((r, j) =>
+              j === residentIndex ? { ...r, [field]: value } : r
+            ),
+          }
+          : t
+      )
+    );
+  };
+
+  const toggleResidentSubtopic = (topicIndex, residentIndex, sub) => {
+    setTopics((prev) =>
+      prev.map((t, i) => {
+        if (i !== topicIndex) return t;
+        const nextResidents = t.residents.map((r, j) => {
+          if (j !== residentIndex) return r;
+          const has = (r.subtopics || []).includes(sub);
+          return {
+            ...r,
+            subtopics: has
+              ? r.subtopics.filter((s) => s !== sub)
+              : [...(r.subtopics || []), sub],
+          };
+        });
+        return { ...t, residents: nextResidents };
+      })
+    );
+  };
+
+  // ---- Export: one row per (resident, subtopic) ----
+  const exportToExcel = () => {
+    const exportRows = topics.flatMap(({ title, residents }) =>
+      (residents || []).flatMap((r) => {
+        const subs =
+          Array.isArray(r.subtopics) && r.subtopics.length ? r.subtopics : [""];
+        return subs.map((st) => ({
+          Title: title,
+          Resident: r.name || "",
+          Subtopic: st,
+          "Due Date": r.dueDate || "",
+        }));
+      })
+    );
+
+    if (!exportRows.length) {
+      alert("No assignments to export yet.");
+      return;
+    }
+
+    const worksheet = XLSX.utils.json_to_sheet(exportRows);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Curriculum");
     XLSX.writeFile(workbook, "Lab_Informatics_Curriculum.xlsx");
   };
 
+  // ---- Admin Login ----
+  const handleLogin = () => {
+    if (adminPassword === "admin123") {
+      setIsAdmin(true);
+      setAdminPassword("");
+    } else {
+      alert("Incorrect password");
+    }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    setAdminPassword("");
+    localStorage.setItem("isAdmin", "false");
+  };
+
+  // ---- Resident Coverage Summary (derived) ----
+  const residentCoverage = useMemo(() => {
+    const map = new Map(); // name -> [{ topic, subtopic, dueDate }]
+    topics.forEach((t) => {
+      (t.residents || []).forEach((r) => {
+        const name = (r.name || "").trim();
+        if (!name) return;
+        const list = map.get(name) || [];
+        const subs =
+          Array.isArray(r.subtopics) && r.subtopics.length ? r.subtopics : [""];
+        subs.forEach((st) =>
+          list.push({ topic: t.title, subtopic: st, dueDate: r.dueDate || "" })
+        );
+        map.set(name, list);
+      });
+    });
+    return Array.from(map.entries()).sort((a, b) =>
+      a[0].localeCompare(b[0])
+    );
+  }, [topics]);
+
+  // ---- UI ----
   return (
     <div className="max-w-6xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Lab Informatics Curriculum for Pathology Residents</h1>
-      <button
-        onClick={exportToExcel}
-        className="mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Export to Excel
-      </button>
+      {/* Header with logo */}
+      <div className="flex items-center mb-6">
+        <img src={logo} alt="Lab Curriculum Logo" className="h-12 w-12 mr-4" />
+        <h1 className="text-3xl font-bold">
+          Lab Informatics Curriculum for Pathology Residents
+        </h1>
+      </div>
+
+      {/* Admin login */}
+      {!isAdmin && (
+        <div className="mb-6">
+          <label className="block text-sm font-medium">Admin Password:</label>
+          <input
+            type="password"
+            className="mt-1 block w-full max-w-sm border border-gray-300 rounded p-2"
+            value={adminPassword}
+            onChange={(e) => setAdminPassword(e.target.value)}
+          />
+          <button
+            className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={handleLogin}
+          >
+            Login as Admin
+          </button>
+        </div>
+      )}
+
+      {/* Admin actions */}
+      {isAdmin && (
+        <div className="flex items-center gap-4 mb-4">
+          <button
+            onClick={exportToExcel}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Export to Excel
+          </button>
+          <button
+            onClick={handleLogout}
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
+      {/* Topics */}
       <div className="space-y-4">
         {topics.map((topic, index) => (
           <div key={topic.id} className="bg-white rounded-xl shadow">
             <button
-              className="w-full text-left px-6 py-4 font-semibold text-lg hover:bg-gray-50 focus:outline-none"
+              className="w-full text-left px-6 py-4 font-semibold text-lg hover:bg-gray-50"
               onClick={() => toggleExpand(index)}
             >
               {topic.title}
             </button>
+
             {topic.expanded && (
               <div className="px-6 pb-4">
+                {/* Subtopics */}
                 <h3 className="font-semibold mt-2">Subtopics:</h3>
                 <ul className="list-disc list-inside text-sm text-gray-700">
                   {topic.subtopics.map((sub, i) => (
@@ -245,56 +283,154 @@ export default function LabInformaticsCurriculum() {
                   ))}
                 </ul>
 
+                {/* Resources */}
                 <h3 className="font-semibold mt-2">Resources:</h3>
                 <ul className="list-disc list-inside text-sm text-blue-700">
                   {topic.resources.map((res, i) => (
                     <li key={i}>
-                      <a
-                        href={res.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="underline text-blue-700 hover:text-blue-900"
-                      >
-                        {res.name}
-                      </a>
+                      {res.url ? (
+                        <a
+                          href={res.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline text-blue-700 hover:text-blue-900"
+                        >
+                          {res.name}
+                        </a>
+                      ) : (
+                        <span>{res.name}</span>
+                      )}
                     </li>
                   ))}
-
                 </ul>
 
-                <div className="mt-4">
-                  <label className="block text-sm font-medium">Resident Name:</label>
-                  <input
-                    type="text"
-                    className="mt-1 block w-full border border-gray-300 rounded p-2"
-                    value={topic.resident}
-                    onChange={(e) => handleChange(index, "resident", e.target.value)}
-                  />
-                </div>
+                {/* Residents */}
+                <h3 className="font-semibold mt-4">Resident Assignments:</h3>
+                {isAdmin && (
+                  <button
+                    onClick={() => addResident(index)}
+                    className="mb-2 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                  >
+                    + Add Resident
+                  </button>
+                )}
 
-                <div className="mt-4">
-                  <label className="block text-sm font-medium">Project Deadline:</label>
-                  <input
-                    type="date"
-                    className="mt-1 block w-full border border-gray-300 rounded p-2"
-                    value={topic.projectDeadline}
-                    onChange={(e) => handleChange(index, "projectDeadline", e.target.value)}
-                  />
-                </div>
+                {topic.residents.map((resident, rIndex) => (
+                  <div key={rIndex} className="mb-4 border-t pt-2">
+                    <div className="flex justify-between items-center">
+                      <label className="block text-sm font-medium">
+                        Resident #{rIndex + 1} Name:
+                      </label>
+                      {isAdmin && (
+                        <button
+                          onClick={() => removeResident(index, rIndex)}
+                          className="text-red-500 text-sm hover:underline"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
 
-                <div className="mt-4">
-                  <label className="block text-sm font-medium">Date of Presentation:</label>
-                  <input
-                    type="date"
-                    className="mt-1 block w-full border border-gray-300 rounded p-2"
-                    value={topic.presentationDate}
-                    onChange={(e) => handleChange(index, "presentationDate", e.target.value)}
-                  />
-                </div>
+                    {/* Name */}
+                    {isAdmin ? (
+                      <input
+                        type="text"
+                        className="mt-1 block w-full border border-gray-300 rounded p-2"
+                        value={resident.name}
+                        onChange={(e) =>
+                          updateResidentField(
+                            index,
+                            rIndex,
+                            "name",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-800">{resident.name}</p>
+                    )}
+
+                    {/* Multi-subtopic selection */}
+                    <label className="block text-sm font-medium mt-2">
+                      Assigned Subtopics:
+                    </label>
+                    <div className="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {topic.subtopics.map((sub, i) => (
+                        <label
+                          key={i}
+                          className="inline-flex items-center gap-2 text-sm"
+                        >
+                          <input
+                            type="checkbox"
+                            className="h-4 w-4"
+                            disabled={!isAdmin}
+                            checked={
+                              Array.isArray(resident.subtopics) &&
+                              resident.subtopics.includes(sub)
+                            }
+                            onChange={() =>
+                              toggleResidentSubtopic(index, rIndex, sub)
+                            }
+                          />
+                          <span>{sub}</span>
+                        </label>
+                      ))}
+                    </div>
+
+                    {/* Due Date */}
+                    <label className="block text-sm font-medium mt-2">
+                      Due Date:
+                    </label>
+                    {isAdmin ? (
+                      <input
+                        type="date"
+                        className="mt-1 block w-full border border-gray-300 rounded p-2"
+                        value={resident.dueDate}
+                        onChange={(e) =>
+                          updateResidentField(
+                            index,
+                            rIndex,
+                            "dueDate",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      <p className="mt-1 text-gray-800">{resident.dueDate}</p>
+                    )}
+                  </div>
+                ))}
               </div>
             )}
           </div>
         ))}
+      </div>
+
+      {/* Resident Coverage Summary */}
+      <div className="mt-8 bg-white rounded-xl shadow p-4">
+        <h2 className="text-xl font-semibold mb-3">
+          Resident Coverage Summary
+        </h2>
+        {residentCoverage.length === 0 ? (
+          <p className="text-sm text-gray-600">No assignments yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {residentCoverage.map(([residentName, items]) => (
+              <div key={residentName}>
+                <h3 className="font-medium">{residentName}</h3>
+                <ul className="list-disc list-inside text-sm text-gray-700">
+                  {items.map((it, idx) => (
+                    <li key={idx}>
+                      <span className="font-medium">{it.topic}</span>
+                      {it.subtopic ? ` — ${it.subtopic}` : ""}
+                      {it.dueDate ? ` (due ${it.dueDate})` : ""}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
