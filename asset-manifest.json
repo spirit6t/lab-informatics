@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/lab-informatics/static/css/main.e6c13ad2.css",
-    "main.js": "/lab-informatics/static/js/main.99b5322f.js",
-    "static/js/453.130a6b31.chunk.js": "/lab-informatics/static/js/453.130a6b31.chunk.js",
-    "static/media/logo.png": "/lab-informatics/static/media/logo.b3c1634be5d738a38767.png",
-    "index.html": "/lab-informatics/index.html",
-    "main.e6c13ad2.css.map": "/lab-informatics/static/css/main.e6c13ad2.css.map",
-    "main.99b5322f.js.map": "/lab-informatics/static/js/main.99b5322f.js.map",
-    "453.130a6b31.chunk.js.map": "/lab-informatics/static/js/453.130a6b31.chunk.js.map"
+    "main.css": "/static/css/main.e6c13ad2.css",
+    "main.js": "/static/js/main.87363c33.js",
+    "static/js/453.130a6b31.chunk.js": "/static/js/453.130a6b31.chunk.js",
+    "static/media/logo.png": "/static/media/logo.b3c1634be5d738a38767.png",
+    "index.html": "/index.html",
+    "main.e6c13ad2.css.map": "/static/css/main.e6c13ad2.css.map",
+    "main.87363c33.js.map": "/static/js/main.87363c33.js.map",
+    "453.130a6b31.chunk.js.map": "/static/js/453.130a6b31.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.99b5322f.js"
+    "static/js/main.87363c33.js"
   ]
 }
